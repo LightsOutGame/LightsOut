@@ -11,5 +11,9 @@ endif()
 
 project ("LightsOut")
 
+# Add SDL library target for projects to include/link
+add_library(SDL2 SHARED IMPORTED GLOBAL)
+set_target_properties(SDL2 PROPERTIES IMPORTED_IMPLIB "${PROJECT_SOURCE_DIR}/SDL2.lib" IMPORTED_LOCATION "${PROJECT_SOURCE_DIR}/SDL2.dll")
+
 # Include sub-projects.
 add_subdirectory ("LightsOut")
