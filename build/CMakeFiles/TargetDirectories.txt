@@ -1,0 +1,7 @@
+C:/Users/Tyler Johnson/Documents/GitHub/LightsOut/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/Tyler Johnson/Documents/GitHub/LightsOut/build/CMakeFiles/ZERO_CHECK.dir
+C:/Users/Tyler Johnson/Documents/GitHub/LightsOut/build/vendored/SDL/CMakeFiles/SDL3-shared.dir
+C:/Users/Tyler Johnson/Documents/GitHub/LightsOut/build/vendored/SDL/CMakeFiles/SDL3_test.dir
+C:/Users/Tyler Johnson/Documents/GitHub/LightsOut/build/vendored/SDL/CMakeFiles/SDL_uclibc.dir
+C:/Users/Tyler Johnson/Documents/GitHub/LightsOut/build/vendored/SDL/CMakeFiles/ALL_BUILD.dir
+C:/Users/Tyler Johnson/Documents/GitHub/LightsOut/build/src/CMakeFiles/LightsOut.dir

@@ -1,0 +1,10 @@
+^C:\USERS\TYLER JOHNSON\DOCUMENTS\GITHUB\LIGHTSOUT\BUILD\CMAKEFILES\7A7903C07662CED10FB1DD5E78FB0D28\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" "-SC:/Users/Tyler Johnson/Documents/GitHub/LightsOut" "-BC:/Users/Tyler Johnson/Documents/GitHub/LightsOut/build" --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file "C:/Users/Tyler Johnson/Documents/GitHub/LightsOut/build/LightsOut.sln"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
