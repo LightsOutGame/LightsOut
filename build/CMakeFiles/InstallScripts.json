@@ -1,9 +1,0 @@
-{
-	"InstallScripts" : 
-	[
-		"C:/Users/Tyler Johnson/Documents/GitHub/LightsOut/build/cmake_install.cmake",
-		"C:/Users/Tyler Johnson/Documents/GitHub/LightsOut/build/vendored/SDL/cmake_install.cmake",
-		"C:/Users/Tyler Johnson/Documents/GitHub/LightsOut/build/src/cmake_install.cmake"
-	],
-	"Parallel" : false
-}
