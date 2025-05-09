@@ -1,24 +1,18 @@
-﻿# CMakeList.txt : Top-level CMake project file, do global configuration
-# and include sub-projects here.
-#
-cmake_minimum_required(VERSION 3.16)
+﻿cmake_minimum_required(VERSION 3.16)
+project(LightsOut)
 
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-# # Enable Hot Reload for MSVC compilers if supported.
-# if (POLICY CMP0141)
-#   cmake_policy(SET CMP0141 NEW)
-#   set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<IF:$<AND:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>,$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>,$<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
-# endif()
+# Configure SDL to build as a shared library on macOS
+if(APPLE)
+    set(SDL_FRAMEWORK OFF CACHE BOOL "" FORCE)
+    set(SDL_STATIC OFF CACHE BOOL "" FORCE)
+    set(SDL_SHARED ON CACHE BOOL "" FORCE)
+endif()
 
-
-project ("LightsOut")
-
-# set the output directory for built objects.
-# This makes sure that the dynamic library goes into the build directory automatically.
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIGURATION>")
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIGURATION>")
-
-# This assumes the SDL source is available in vendored/SDL
+# Build vendored SDL3
 add_subdirectory(vendored/SDL EXCLUDE_FROM_ALL)
-add_subdirectory(src)
 
+# Add the game source
+add_subdirectory(src)
