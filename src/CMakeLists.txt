@@ -1,5 +1,4 @@
-﻿
-# Game sources
+﻿# Game sources
 set(GAME_SOURCES
         MainGame.cpp
 )
@@ -33,7 +32,7 @@ if(APPLE)
             VERBATIM
     )
 
-    # Install target
+    # Install target for both local installation and DMG packaging
     install(TARGETS LightsOut
             BUNDLE DESTINATION .
             COMPONENT Runtime
