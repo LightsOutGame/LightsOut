@@ -21,3 +21,5 @@ public:
 #define REFLECT(field) {STRINGIZE(NAMEOF(field)), STRINGIZE(TYPEOF(field))},
 static inline const unordered_map<string, string> field_data = { FIELDS };
 #undef REFLECT
+
+#undef FIELDS
