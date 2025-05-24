@@ -3,6 +3,9 @@
 #
 cmake_minimum_required(VERSION 3.16)
 
+# Need to add these flags so that the __cplusplus macro works
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Zc:preprocessor /Zc:__cplusplus")
+
 
 # # Enable Hot Reload for MSVC compilers if supported.
 # if (POLICY CMP0141)
