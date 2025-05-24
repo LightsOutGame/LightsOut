@@ -2,7 +2,7 @@
 # project specific logic here.
 #
 
-set(SOURCE_FILES "MainGame.cpp")
+set(SOURCE_FILES "reflection_test.cpp")
 # Add source to this project's executable.
 if (WIN32)
 	# NOTE: I re-enabled the command line for the reflection testing. ADD BACK THE WIN32 FLAG LATER
