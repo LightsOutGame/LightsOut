@@ -1,9 +1,8 @@
 #pragma once
 
-#include <string>
 #include <unordered_map>
 
-#include "ComponentKey.h"
+#include "ComponentMeta.h"
 #include "EntityRef.h"
 #include "Events.h"
 
@@ -19,5 +18,4 @@ class Component {
 	void registerEventCallback(Events::EventType event, Events::EventCallback callback);
 
 	virtual void init() = 0;
-
 };
