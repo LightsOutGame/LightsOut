@@ -6,16 +6,16 @@
 #include "EntityRef.h"
 #include "Events.h"
 
+typedef std::unordered_map<Events::EventType, Events::EventCallback> CallbackMap;
+
 class Component {
 	public:
 	const static ComponentKey key;
 
+	void triggerEvent(Events::EventType e);
+
 	private:
 	EntityRef entity;
 
-	std::unordered_map<Events::EventType, Events::EventCallback> callbacks;
-
-	void registerEventCallback(Events::EventType event, Events::EventCallback callback);
-
-	virtual void init() = 0;
+	virtual const CallbackMap* getCallbacks() const;
 };
