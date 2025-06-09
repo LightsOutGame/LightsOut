@@ -6,7 +6,10 @@
 #include "EntityRef.h"
 #include "Events.h"
 
-typedef std::unordered_map<Events::EventType, Events::EventCallback> CallbackMap;
+
+typedef void (*EventCallback)(Component* self);
+
+typedef std::unordered_map<Events::EventType, EventCallback> CallbackMap;
 
 class Component {
 	public:

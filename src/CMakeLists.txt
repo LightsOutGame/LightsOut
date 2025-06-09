@@ -9,7 +9,7 @@ set(SRC "MainGame.cpp"
 	"Component.cpp"
 	"ComponentRef.cpp"
 		"MainLoop.cpp"
-)
+ "PrinterComponent.cpp")
 if (WIN32)
 	add_executable (LightsOut WIN32 ${SRC})
 elseif (APPLE)

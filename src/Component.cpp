@@ -12,7 +12,7 @@ void Component::triggerEvent(Events::EventType e) {
 	const CallbackMap* callbacks = getCallbacks();
 
 	if (callbacks) {
-		Events::EventCallback c = callbacks->at(e);
-		if (c) c();
+		EventCallback func = callbacks->at(e);
+		if (func) func(this);
 	}
 }
