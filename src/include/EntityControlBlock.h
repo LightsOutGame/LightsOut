@@ -4,5 +4,5 @@
 
 struct EntityControlBlock {
 	std::string uuid;
-	bool alive
+	bool alive;
 };
