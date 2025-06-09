@@ -14,3 +14,5 @@ struct EntityRef {
 };
 
 class EntityHasher;
+
+EntityRef makeEntity();
