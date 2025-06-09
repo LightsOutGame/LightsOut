@@ -12,6 +12,8 @@ class Component {
 	public:
 	const static ComponentKey key;
 
+	Component(EntityRef boundEntity);
+
 	void triggerEvent(Events::EventType e);
 
 	private:
