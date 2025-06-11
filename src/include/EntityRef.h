@@ -10,9 +10,9 @@ struct EntityRef {
 
 	bool isAlive();
 
-	friend class EntityHasher;
+	bool operator==(const EntityRef& other) const {
+		return ctrlBlock.get() == other.ctrlBlock.get();
+	}
 };
-
-class EntityHasher;
 
 EntityRef makeEntity();

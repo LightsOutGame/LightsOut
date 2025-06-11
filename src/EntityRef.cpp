@@ -1,21 +1,21 @@
 #include "EntityRef.h"
 #include "EntityControlBlock.h"
 
-using namespace std;
-
 bool EntityRef::isAlive() {
 	return ctrlBlock->alive;
 }
 
-class EntityHasher {
-	public:
-	size_t operator()(const EntityRef& e) {
-		return hash<string>()(e.ctrlBlock->uuid);
-	}
-};
+namespace std {
+	template<>
+	struct hash<EntityRef> {
+		size_t operator()(const EntityRef& k) const {
+			return hash<string>()(k.ctrlBlock->uuid);
+		}
+	};
+}
 
 EntityRef makeEntity() {
-	shared_ptr<EntityControlBlock> ctrlBlock = make_shared<EntityControlBlock>();
+	std::shared_ptr<EntityControlBlock> ctrlBlock = std::make_shared<EntityControlBlock>();
 
 	ctrlBlock->alive = true;
 
