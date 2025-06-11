@@ -8,6 +8,8 @@ static void my_test_function(Component* self) {
 
 const CallbackMap* PrinterComponent::getCallbacks() const {
 	static CallbackMap printerCallbacks = {
-		std::pair<Events::EventType, EventCallback> { Events::PlayerUpdate, (EventCallback)my_test_function }
+		{ Events::PlayerUpdate, &my_test_function }
 	};
+
+	return &printerCallbacks;
 }

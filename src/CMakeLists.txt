@@ -3,12 +3,11 @@
 #
 
 # Add source to this project's executable.
-set(SRC "MainGame.cpp"
+set(SRC "MainLoop.cpp"
 	"EntityRef.cpp"
 	"Events.cpp"
 	"Component.cpp"
 	"ComponentRef.cpp"
-		"MainLoop.cpp"
  "PrinterComponent.cpp")
 if (WIN32)
 	add_executable (LightsOut WIN32 ${SRC})
