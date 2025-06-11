@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <memory>
 #include <functional>
+#include <iostream>
 
 #include "EntityRef.h"
 #include "Component.h"
@@ -81,12 +82,14 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     // });
     //
 
+	// Let the engine know the component exists
 	game->components.emplace(PrinterComponent::staticGetKey(), std::unordered_map<EntityRef, std::shared_ptr<Component>>());
+	Events::registerListener(Events::PlayerUpdate, PrinterComponent::staticGetKey());
 
+	// Create the entity and attach the test component
 	EntityRef e = makeEntity();
 	std::shared_ptr<Component> testComponent = std::make_shared<PrinterComponent>(e);
-
-	//game->components.at(testComponent->getKey()).emplace(e, testComponent);
+	game->components.at(testComponent->getKey()).emplace(e, testComponent);
 
     return SDL_APP_CONTINUE;
 }
@@ -104,7 +107,6 @@ SDL_AppResult SDL_AppIterate(void* appstate) {
     TylerDoesntLikeTheGameClass* game = static_cast<TylerDoesntLikeTheGameClass*>(appstate);
     if (!game->running) return SDL_APP_SUCCESS;
 
-	/*
     for (int i=0; i < Events::EventType::COUNT; i++) {
         // not poetry
         Events::EventType eventType = static_cast<Events::EventType>(i);
@@ -116,7 +118,6 @@ SDL_AppResult SDL_AppIterate(void* appstate) {
             }
         }
     }
-	*/
 
     // // Rendering
     // SDL_SetRenderTarget(game->renderer, game->bufferTexture);

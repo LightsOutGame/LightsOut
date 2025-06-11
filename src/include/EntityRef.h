@@ -15,4 +15,9 @@ struct EntityRef {
 	}
 };
 
+template<>
+struct std::hash<EntityRef> {
+	size_t operator()(const EntityRef& k) const;
+};
+
 EntityRef makeEntity();

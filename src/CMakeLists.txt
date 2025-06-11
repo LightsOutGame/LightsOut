@@ -10,7 +10,7 @@ set(SRC "MainLoop.cpp"
 	"ComponentRef.cpp"
  "PrinterComponent.cpp")
 if (WIN32)
-	add_executable (LightsOut WIN32 ${SRC})
+	add_executable (LightsOut ${SRC})
 elseif (APPLE)
 	add_executable (LightsOut MACOSX_BUNDLE ${SRC})
 else()

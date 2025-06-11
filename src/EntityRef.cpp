@@ -5,13 +5,8 @@ bool EntityRef::isAlive() {
 	return ctrlBlock->alive;
 }
 
-namespace std {
-	template<>
-	struct hash<EntityRef> {
-		size_t operator()(const EntityRef& k) const {
-			return hash<string>()(k.ctrlBlock->uuid);
-		}
-	};
+size_t std::hash<EntityRef>::operator()(const EntityRef& k) const {
+	return hash<string>()(k.ctrlBlock->uuid);
 }
 
 EntityRef makeEntity() {
