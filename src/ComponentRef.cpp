@@ -1,6 +1,6 @@
 #include "ComponentRef.h"
 
-#include <exception>
+#include <stdexcept>
 
 Component& ComponentRef::operator*() {
 	if (!entity.isAlive()) {
