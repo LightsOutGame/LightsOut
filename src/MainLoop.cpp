@@ -119,6 +119,9 @@ SDL_AppResult SDL_AppIterate(void* appstate) {
         }
     }
 
+    // EntityRef entity = makeEntity();
+
+
     // // Rendering
     // SDL_SetRenderTarget(game->renderer, game->bufferTexture);
     // SDL_SetRenderDrawColor(game->renderer, 0, 0, 0, 255);

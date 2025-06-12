@@ -8,7 +8,9 @@ set(SRC "MainLoop.cpp"
 	"Events.cpp"
 	"Component.cpp"
 	"ComponentRef.cpp"
- "PrinterComponent.cpp")
+    "PrinterComponent.cpp")
+
+
 if (WIN32)
 	add_executable (LightsOut ${SRC})
 elseif (APPLE)
@@ -19,7 +21,7 @@ endif()
 
 # Set C++ standard to 20
 target_compile_features(LightsOut PUBLIC cxx_std_20)
-	
+
 # Link to the actual SDL3 library.
 target_link_libraries(LightsOut PRIVATE SDL3::SDL3)
 

@@ -4,11 +4,11 @@
 
 Component& ComponentRef::operator*() {
 	if (!entity.isAlive()) {
-		throw new std::exception("Attempted to reference component of a dead entity");
+		throw std::runtime_error("Attempted to reference component of a dead entity");
 	}
 
 	if (ptr.expired()) {
-		throw new std::exception("Attempted to reference a dead component");
+		throw std::runtime_error("Attempted to reference a dead component");
 	}
 
 	return *ptr.lock();

@@ -26,8 +26,9 @@ class Component {
 	virtual const CallbackMap* getCallbacks() const;
 };
 
+
 // NEED TO INCLUDE THIS IN EVERY COMPONENT DEFINITION
 #define KEYDEF(key) \
 	public: \
-	static constexpr ComponentKey staticGetKey() { return #key ## ;} \
-	ComponentKey Component::getKey() const override { return staticGetKey(); }
+	static constexpr ComponentKey staticGetKey() { return #key;} \
+	ComponentKey getKey() const override { return staticGetKey(); }
