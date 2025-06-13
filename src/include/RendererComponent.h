@@ -3,9 +3,8 @@
 #include "Component.h"
 #include "EntityRef.h"
 #include "Events.h"
-#include <SDL.h>
-
-class TylerDoesntLikeTheGameClass;
+#include <SDL3/SDL.h>
+#include "TylerDoesntLikeTheGameClass.h"
 
 class RendererComponent : public Component {
 public:
