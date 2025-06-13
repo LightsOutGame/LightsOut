@@ -14,14 +14,10 @@
 
 #include "PrinterComponent.h"
 #include "TylerDoesntLikeTheGameClass.h"
+#include "ResizeMode.h"
 
 
 
-enum class ResizeMode {
-    LETTERBOX,
-    STRETCH,
-    NONE
-};
 
 
 

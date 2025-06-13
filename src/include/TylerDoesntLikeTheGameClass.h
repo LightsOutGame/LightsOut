@@ -3,6 +3,8 @@
 //
 
 #pragma once
+#include "ResizeMode.h"
+
 
 class TylerDoesntLikeTheGameClass {
 public:
