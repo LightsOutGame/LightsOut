@@ -8,6 +8,10 @@
 
 class Component;
 
+
+template<typename T>
+concept ComponentLike = std::is_base_of_v<Component, T> && std::is_same_v<decltype(T::key), ComponentKey>;
+
 typedef void (*EventCallback)(Component*);
 
 typedef std::unordered_map<Events::EventType, EventCallback> CallbackMap;
