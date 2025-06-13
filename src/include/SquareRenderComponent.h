@@ -4,14 +4,15 @@
 
 #pragma once
 
+#include "RenderComponent.h"
 
-
-class SquareRenderComponent: public RenderComponent {
+class SquareRenderComponent : public RenderComponent {
     public:
-    SquareRenderComponent(EntityRef boundEntity, TylerDoesntLikeTheGameClass* game);
+    SquareRenderComponent(EntityRef boundEntity);
+
     KEYDEF(square)
 
-    void onRender(TylerDoesntLikeTheGameClass& game);
+    void onRender(SDL_Renderer* renderer) const override;
 
 
 

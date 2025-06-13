@@ -12,10 +12,12 @@
 #include <iostream>
 
 #include "EntityRef.h"
-#include "Component.h"
 #include "Events.h"
+#include "Component.h"
+#include "RenderComponent.h"
 
 #include "PrinterComponent.h"
+#include "SquareRenderComponent.h"
 
 // COMPONENT MANAGEMENT
 void TylerDoesntLikeTheGameClass::registerComponent(ComponentKey compKey) {
@@ -26,6 +28,13 @@ template<typename... Args>
 void TylerDoesntLikeTheGameClass::registerComponent(ComponentKey compKey, Args... eventsToListenFor) {
 	components.emplace(compKey, std::unordered_map<EntityRef, std::shared_ptr<Component>>());
 	Events::registerListener(compKey, eventsToListenFor...);
+}
+
+template<typename... Args>
+void TylerDoesntLikeTheGameClass::registerRenderingComponent(ComponentKey compKey, Args... eventsToListenFor) {
+	renderingComponents.push_back(compKey);
+
+	registerComponent(compKey, eventsToListenFor...);
 }
 
 
@@ -73,10 +82,16 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
 
 	// Let the engine know the component exists
 	game->registerComponent(PrinterComponent::staticGetKey(), Events::PlayerUpdate);
+	game->registerRenderingComponent(SquareRenderComponent::staticGetKey());
 
 	// Create the entity and attach the test component
 	EntityRef e = makeEntity();
+
 	std::shared_ptr<Component> testComponent = std::make_shared<PrinterComponent>(e);
+	game->components.at(testComponent->getKey()).emplace(e, testComponent);
+
+
+	testComponent = std::make_shared<SquareRenderComponent>(e);
 	game->components.at(testComponent->getKey()).emplace(e, testComponent);
 
 
@@ -103,8 +118,8 @@ SDL_AppResult SDL_AppIterate(void* appstate) {
         Events::EventType eventType = static_cast<Events::EventType>(i);
         std::vector<ComponentKey>& listeningComponents = Events::getEventListeners(eventType);
         for (const ComponentKey& key : listeningComponents) {
-            std::unordered_map<EntityRef, std::shared_ptr<Component>>& entities = game->components.at(key);
-            for (auto& [entityRef, component] : entities) {
+            std::unordered_map<EntityRef, std::shared_ptr<Component>>& cmptInstances = game->components.at(key);
+            for (auto& [entityRef, component] : cmptInstances) {
                 component->triggerEvent(eventType);
             }
         }
@@ -113,63 +128,68 @@ SDL_AppResult SDL_AppIterate(void* appstate) {
     // EntityRef entity = makeEntity();
 
 
-    // // Rendering
-    // SDL_SetRenderTarget(game->renderer, game->bufferTexture);
-    // SDL_SetRenderDrawColor(game->renderer, 0, 0, 0, 255);
-    // SDL_RenderClear(game->renderer);
-    //
-    // for (const auto& [key, pair] : game->components) {
-    //     auto& [entity, component] = pair;
-    //     if (entity->isAlive()) {
-    //         component->draw(game->renderer);
-    //     }
-    // }
-    //
-    // // Handle Window Resize Scaling (idk if this works?)
-    // SDL_SetRenderTarget(game->renderer, nullptr);
-    // int windowWidth, windowHeight;
-    // SDL_GetWindowSize(game->window, &windowWidth, &windowHeight);
-    //
-    // SDL_FRect dstRect;
-    // switch (game->resizeMode) {
-    //     case ResizeMode::LETTERBOX: {
-    //         float aspectRatio = 800.0f / 600.0f;
-    //         float windowAspect = static_cast<float>(windowWidth) / windowHeight;
-    //         if (windowAspect > aspectRatio) {
-    //             dstRect.h = windowHeight;
-    //             dstRect.w = static_cast<int>(windowHeight * aspectRatio);
-    //             dstRect.x = (windowWidth - dstRect.w) / 2;
-    //             dstRect.y = 0;
-    //         } else {
-    //             dstRect.w = windowWidth;
-    //             dstRect.h = static_cast<int>(windowWidth / aspectRatio);
-    //             dstRect.x = 0;
-    //             dstRect.y = (windowHeight - dstRect.h) / 2;
-    //         }
-    //         break;
-    //     }
-    //     case ResizeMode::STRETCH: {
-    //         dstRect.x = 0;
-    //         dstRect.y = 0;
-    //         dstRect.w = windowWidth;
-    //         dstRect.h = windowHeight;
-    //         break;
-    //     }
-    //     case ResizeMode::NONE: {
-    //         dstRect.x = 0;
-    //         dstRect.y = 0;
-    //         dstRect.w = 800;
-    //         dstRect.h = 600;
-    //         break;
-    //     }
-    // }
-    //
-    // SDL_SetRenderDrawColor(game->renderer, 0, 0, 0, 255);
-    // SDL_RenderClear(game->renderer);
-    // SDL_RenderTexture(game->renderer, game->bufferTexture, nullptr, &dstRect);
-    // SDL_RenderPresent(game->renderer);
-    //
-    // SDL_SetRenderTarget(game->renderer, game->bufferTexture);
+    // Rendering
+    SDL_SetRenderTarget(game->renderer, game->bufferTexture);
+    SDL_SetRenderDrawColor(game->renderer, 0, 0, 0, 255);
+    SDL_RenderClear(game->renderer);
+    
+    for (const ComponentKey& key : game->renderingComponents) {
+		std::unordered_map<EntityRef, std::shared_ptr<Component>>& cmptInstances = game->components.at(key);
+		for (auto& [entityRef, component] : cmptInstances) {
+			// Scary cast, gotta trust that given component actually
+			// is a RenderComponent subclass. Maybe we can find a way
+			// of making this safer?
+
+			RenderComponent* r = (RenderComponent*) component.get();
+			r->onRender(game->renderer);
+		}
+    }
+   
+    // Handle Window Resize Scaling (idk if this works?)
+    SDL_SetRenderTarget(game->renderer, nullptr);
+    int windowWidth, windowHeight;
+    SDL_GetWindowSize(game->window, &windowWidth, &windowHeight);
+    
+    SDL_FRect dstRect;
+    switch (game->resizeMode) {
+        case ResizeMode::LETTERBOX: {
+            float aspectRatio = 800.0f / 600.0f;
+            float windowAspect = static_cast<float>(windowWidth) / windowHeight;
+            if (windowAspect > aspectRatio) {
+                dstRect.h = windowHeight;
+                dstRect.w = static_cast<int>(windowHeight * aspectRatio);
+                dstRect.x = (windowWidth - dstRect.w) / 2;
+                dstRect.y = 0;
+            } else {
+                dstRect.w = windowWidth;
+                dstRect.h = static_cast<int>(windowWidth / aspectRatio);
+                dstRect.x = 0;
+                dstRect.y = (windowHeight - dstRect.h) / 2;
+            }
+            break;
+        }
+        case ResizeMode::STRETCH: {
+            dstRect.x = 0;
+            dstRect.y = 0;
+            dstRect.w = windowWidth;
+            dstRect.h = windowHeight;
+            break;
+        }
+        case ResizeMode::NONE: {
+            dstRect.x = 0;
+            dstRect.y = 0;
+            dstRect.w = 800;
+            dstRect.h = 600;
+            break;
+        }
+    }
+    
+    SDL_SetRenderDrawColor(game->renderer, 0, 0, 0, 255);
+    SDL_RenderClear(game->renderer);
+    SDL_RenderTexture(game->renderer, game->bufferTexture, nullptr, &dstRect);
+    SDL_RenderPresent(game->renderer);
+    
+    SDL_SetRenderTarget(game->renderer, game->bufferTexture);
     return SDL_APP_CONTINUE;
 }
 

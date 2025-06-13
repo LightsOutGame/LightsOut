@@ -3,21 +3,14 @@
 //
 
 #include "SquareRenderComponent.h"
-#include <SDL3/SDL.h>
-#include <iostream>
 
-
-
-
-SquareRenderComponent::SquareRenderComponent(EntityRef boundEntity, TylerDoesntLikeTheGameClass* game) : RenderComponent(boundEntity, game) {
+SquareRenderComponent::SquareRenderComponent(EntityRef boundEntity) : RenderComponent(boundEntity) {
 
 }
 
-
-const void SquareRenderComponent::onRender() const
+void SquareRenderComponent::onRender(SDL_Renderer* renderer) const
 {
-SDL_Renderer *renderer = game->renderer;
-        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-        SDL_FRect rect = {0, 0, 100, 100};
-        SDL_RenderRect(*renderer, *rect);
+    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+    SDL_FRect rect = {0, 0, 100, 100};
+    SDL_RenderRect(renderer, &rect);
 };

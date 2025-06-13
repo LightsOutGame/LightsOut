@@ -25,9 +25,13 @@ public:
 
     std::unordered_map<ComponentKey, std::unordered_map<EntityRef, std::shared_ptr<Component>>> components;
 
+	std::vector<ComponentKey> renderingComponents;
 
 	void registerComponent(ComponentKey compKey);
 
 	template<typename... Args>
 	void registerComponent(ComponentKey compKey, Args... eventsToListenFor);
+
+	template<typename... Args>
+	void registerRenderingComponent(ComponentKey compKey, Args... eventsToListenFor);
 };

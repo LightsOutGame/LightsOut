@@ -8,10 +8,15 @@ set(SRC "Game.cpp"
 	"Events.cpp"
 	"Component.cpp"
 	"ComponentRef.cpp"
-    "PrinterComponent.cpp" )
+	"RenderComponent.cpp"
+    "PrinterComponent.cpp"
+	"SquareRenderComponent.cpp")
 
 
 if (WIN32)
+	# for later: Add the WIN32 flag back to this add_executable() call.
+	# it removes the terminal window for Windows executables.
+	# We're keeping it now for testing purposes.
 	add_executable (LightsOut ${SRC})
 elseif (APPLE)
 	add_executable (LightsOut MACOSX_BUNDLE ${SRC})
