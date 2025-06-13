@@ -74,6 +74,9 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
 	std::shared_ptr<Component> testComponent = std::make_shared<PrinterComponent>(e);
 	game->components.at(testComponent->getKey()).emplace(e, testComponent);
 
+
+
+
     return SDL_APP_CONTINUE;
 }
 
