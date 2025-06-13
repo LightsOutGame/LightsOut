@@ -3,7 +3,13 @@
 //
 
 #pragma once
+
+#include <SDL3/SDL.h>
+
 #include "ResizeMode.h"
+#include "Component.h"
+#include "EntityRef.h"
+#include "Events.h"
 
 
 class TylerDoesntLikeTheGameClass {
@@ -19,5 +25,9 @@ public:
 
     std::unordered_map<ComponentKey, std::unordered_map<EntityRef, std::shared_ptr<Component>>> components;
 
-};
 
+	void registerComponent(ComponentKey compKey);
+
+	template<typename... Args>
+	void registerComponent(ComponentKey compKey, Args... eventsToListenFor);
+};

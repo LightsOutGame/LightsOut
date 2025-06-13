@@ -3,12 +3,12 @@
 #
 
 # Add source to this project's executable.
-set(SRC "MainLoop.cpp"
+set(SRC "Game.cpp"
 	"EntityRef.cpp"
 	"Events.cpp"
 	"Component.cpp"
 	"ComponentRef.cpp"
-    "PrinterComponent.cpp")
+    "PrinterComponent.cpp" )
 
 
 if (WIN32)

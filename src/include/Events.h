@@ -11,7 +11,10 @@ namespace Events {
 		COUNT // Should always be placed last, not an actual event
 	};
 
-	void registerListener(EventType event, ComponentKey listener);
+	void registerListener(ComponentKey listener, EventType evt);
+
+	template<typename... Args>
+	void registerListener(ComponentKey listener, EventType evt, Args... eventsToListenFor);
 
 	std::vector<ComponentKey>& getEventListeners(EventType event);
 }

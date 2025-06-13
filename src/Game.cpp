@@ -1,4 +1,7 @@
 #define SDL_MAIN_USE_CALLBACKS 1
+
+#include "Game.h"
+
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 #include <unordered_map>
@@ -13,14 +16,17 @@
 #include "Events.h"
 
 #include "PrinterComponent.h"
-#include "TylerDoesntLikeTheGameClass.h"
-#include "ResizeMode.h"
 
+// COMPONENT MANAGEMENT
+void TylerDoesntLikeTheGameClass::registerComponent(ComponentKey compKey) {
+	components.emplace(compKey, std::unordered_map<EntityRef, std::shared_ptr<Component>>());
+}
 
-
-
-
-
+template<typename... Args>
+void TylerDoesntLikeTheGameClass::registerComponent(ComponentKey compKey, Args... eventsToListenFor) {
+	components.emplace(compKey, std::unordered_map<EntityRef, std::shared_ptr<Component>>());
+	Events::registerListener(compKey, eventsToListenFor...);
+}
 
 
 
@@ -66,8 +72,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     //
 
 	// Let the engine know the component exists
-	game->components.emplace(PrinterComponent::staticGetKey(), std::unordered_map<EntityRef, std::shared_ptr<Component>>());
-	Events::registerListener(Events::PlayerUpdate, PrinterComponent::staticGetKey());
+	game->registerComponent(PrinterComponent::staticGetKey(), Events::PlayerUpdate);
 
 	// Create the entity and attach the test component
 	EntityRef e = makeEntity();
