@@ -1,8 +1,6 @@
 #include "Component.h"
 
-Component::Component(EntityRef boundEntity) {
-	entity = boundEntity;
-}
+Component::Component(EntityRef boundEntity): entity(boundEntity) {}
 
 const CallbackMap* Component::getCallbacks() const {
 	return nullptr;
