@@ -1,3 +1,8 @@
+/*
+* ComponentRef.h
+* Defines the ComponentRef struct for referencing components.
+*/
+
 #pragma once
 
 #include <memory>
@@ -5,9 +10,13 @@
 #include "Component.h"
 #include "EntityRef.h"
 
+// Struct for referencing a component and its bound entity
 struct ComponentRef {
-	EntityRef entity;
-	std::weak_ptr<Component> ptr;
+    // Reference to the entity this component is attached to
+    EntityRef entity;
+    // Weak pointer to the component instance
+    std::weak_ptr<Component> ptr;
 
-	Component& operator*();
+    // Dereference operator to access the component
+    Component& operator*();
 };
