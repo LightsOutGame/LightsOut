@@ -21,6 +21,7 @@ public:
     TylerDoesntLikeTheGameClass() = default;
 
     // Member variables
+	
     // Pointer to the SDL window
     SDL_Window* window = nullptr;
     // Pointer to the SDL renderer
@@ -39,15 +40,11 @@ public:
     std::vector<ComponentKey> renderingComponents;
 
     // Registers a component type in the system
-    void registerComponent(ComponentKey compKey);
+	  template <ComponentLike T>
+    void registerComponent();
 
-    // Registers a component type with associated events to listen for
-    template<typename... Args>
-    void registerComponent(ComponentKey compKey, Args... eventsToListenFor);
-
-    // Registers a component type as a rendering component with associated events
-    template<typename... Args>
-    void registerRenderingComponent(ComponentKey compKey, Args... eventsToListenFor);
+    template<ComponentLike T, typename... Args>
+    void registerComponent(Args... eventsToListenFor);
+  
+    ComponentRef getComponent(Entity entity, ComponentKey type);
 };
-
-ComponentRef getComponent(Entity entity, ComponentKey type);
