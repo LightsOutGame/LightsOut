@@ -43,9 +43,12 @@ public:
 	  template <ComponentLike Type>
     void registerComponent();
 
+	// Registers a component type with associated events to listen for
     template<ComponentLike Type, typename... Args>
     void registerComponent(Args... eventsToListenFor);
-  
+ 
+	// Retrieves the component of the given type attached to the given entity.
+	// If none exists, returns an empty ComponentRef.
 	template<ComponentLike Type>
     ComponentRef getComponent(EntityRef entity);
 };

@@ -12,12 +12,9 @@
 #include "engine/Component.h"
 #include "engine/RenderComponent.h"
 
-
-// COMPONENT MANAGEMENT
-// Registers a component type in the system
-template<ComponentLike Ttype>
+template<ComponentLike Type>
 void TylerDoesntLikeTheGameClass::registerComponent() {
-	components.emplace(T::staticGetKey(), std::unordered_map<EntityRef, std::shared_ptr<Component>>());
+	components.emplace(Type::staticGetKey(), std::unordered_map<EntityRef, std::shared_ptr<Component>>());
 
 	// Component should have the render callbacks
 	if (std::is_base_of_v<RenderComponent, Type>) {
@@ -25,7 +22,6 @@ void TylerDoesntLikeTheGameClass::registerComponent() {
 	}
 }
 
-// Registers a component type with associated events to listen for
 template<ComponentLike Type, typename... Args>
 void TylerDoesntLikeTheGameClass::registerComponent(Args... eventsToListenFor) {
 	registerComponent<Type>();
