@@ -13,6 +13,7 @@
 #include "engine/Component.h"
 #include "engine/EntityRef.h"
 #include "engine/Events.h"
+#include "engine/ComponentRef.h"
 
 class TylerDoesntLikeTheGameClass {
 public:
@@ -39,10 +40,11 @@ public:
     std::vector<ComponentKey> renderingComponents;
 
     // Registers a component type in the system
-	template <ComponentLike T>
+	  template <ComponentLike T>
     void registerComponent();
 
-    // Registers a component type with associated events to listen for
     template<ComponentLike T, typename... Args>
     void registerComponent(Args... eventsToListenFor);
+  
+    ComponentRef getComponent(Entity entity, ComponentKey type);
 };

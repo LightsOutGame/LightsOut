@@ -15,6 +15,25 @@
 
 // COMPONENT MANAGEMENT
 // Registers a component type in the system
+ComponentRef getComponent(EntityRef entity, ComponentKey key) {
+	ComponentRef result;
+	result.entity = entity;
+
+	// Find the map for the given ComponentKey
+	auto type_it = components.find(key);
+	if (type_it != components.end()) {
+		// Find the component for the given EntityRef
+		auto entity_it = type_it->second.find(entity);
+		if (entity_it != type_it->second.end()) {
+			// Assign the shared_ptr to a weak_ptr
+			result.ptr = entity_it->second;
+		}
+		// If not found, ptr remains an empty weak_ptr
+	}
+	// If type not found, ptr remains an empty weak_ptr
+	return result;
+}
+
 template<ComponentLike T>
 void TylerDoesntLikeTheGameClass::registerComponent() {
 	components.emplace(T::staticGetKey(), std::unordered_map<EntityRef, std::shared_ptr<Component>>());
