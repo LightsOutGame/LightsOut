@@ -12,14 +12,18 @@
 
 // Callback function
 static void play_audio(Component* self) {
-	std::cout << "wow, another cool function" << std::endl;
 	// Load audio files
-	Mix_Music* backgroundMusic = Mix_LoadMUS("src/assets/audio/Danger.mp3");
-	if (!backgroundMusic) {
+	AudioTestComponent* audioComponent = dynamic_cast<AudioTestComponent*>(self);
+	audioComponent->backgroundMusic = Mix_LoadMUS("src/assets/audio/Danger.mp3");
+	if (!audioComponent->backgroundMusic) {
 		std::cerr << "Mix_LoadMUS failed: " << SDL_GetError() << std::endl;
 	}
 
-	Mix_PlayMusic(backgroundMusic, -1);
+	// Check if music is already playing to avoid restarting
+    if (!Mix_PlayingMusic() && audioComponent->backgroundMusic) {
+		std::cout << "audio file has just been started" << std::endl;
+        Mix_PlayMusic(audioComponent->backgroundMusic, -1);
+    }
 }
 
 // Initialize AudioTestComponent

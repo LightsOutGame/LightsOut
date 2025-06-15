@@ -1,1 +1,4 @@
-# Light's Out!
+# Lights Out!
+
+*a stealth puzzle platformer*
+

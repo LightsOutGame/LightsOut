@@ -13,6 +13,8 @@ class AudioTestComponent : public Component {
 	// Defines the unique key for this component type
 	KEYDEF(audio_test)
 
+	Mix_Music* backgroundMusic; // Store music persistently
+
 	private:
 	// Returns the map of event callbacks for this component
 	const CallbackMap* getCallbacks() const override;
