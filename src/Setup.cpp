@@ -1,4 +1,9 @@
-#include "Game.h"
+/**
+ * Setup.cpp
+ * Contains non-generic setup code(code specific to the game, not the engine).
+ */
+
+#include "Setup.h"
 
 #include "components/PrinterComponent.h"
 #include "components/SquareRenderComponent.h"
