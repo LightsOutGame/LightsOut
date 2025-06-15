@@ -18,5 +18,8 @@ struct ComponentRef {
     std::weak_ptr<Component> ptr;
 
     // Dereference operator to access the component
-    Component& operator*();
+    Component& operator*() const;
+
+	// Returns false if the ComponentRef is unassigned
+	operator bool() const;
 };

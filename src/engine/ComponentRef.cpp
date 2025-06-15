@@ -9,7 +9,7 @@
 #include <stdexcept>
 
 // Dereference operator to access the component
-Component& ComponentRef::operator*() {
+Component& ComponentRef::operator*() const {
 
 	// Check if the entity is still alive
 	if (!entity.isAlive()) {
@@ -23,4 +23,10 @@ Component& ComponentRef::operator*() {
 
 	// Return the component instance
 	return *ptr.lock();
+}
+
+ComponentRef::operator bool() const {
+	// Thanks to https://stackoverflow.com/questions/45507041/how-to-check-if-weak-ptr-is-empty-non-assigned
+	using wp = std::weak_ptr<Component>;
+	return !ptr.owner_before(wp{}) && !wp{}.owner_before(ptr);
 }

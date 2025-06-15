@@ -9,7 +9,7 @@
 #include "engine/EntityControlBlock.h"
 
 // Checks if the referenced entity is still active
-bool EntityRef::isAlive() {
+bool EntityRef::isAlive() const {
     return ctrlBlock->alive;
 }
 

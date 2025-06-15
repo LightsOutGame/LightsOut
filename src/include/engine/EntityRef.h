@@ -15,7 +15,7 @@ struct EntityRef {
 	std::shared_ptr<EntityControlBlock> ctrlBlock;
 
 	// Checks if the referenced entity is still active
-	bool isAlive();
+	bool isAlive() const;
 
 	// Equality operator to compare two entity references
 	bool operator==(const EntityRef& other) const {

@@ -1,4 +1,4 @@
-/*
+/**
  * Game.cpp
  * Implements the core game functionality.
  * Provides SDL callback functions for initialization, event handling, game loop
@@ -15,12 +15,30 @@
 
 // COMPONENT MANAGEMENT
 // Registers a component type in the system
-ComponentRef getComponent(EntityRef entity, ComponentKey key) {
-	ComponentRef result;
+template<ComponentLike Ttype>
+void TylerDoesntLikeTheGameClass::registerComponent() {
+	components.emplace(T::staticGetKey(), std::unordered_map<EntityRef, std::shared_ptr<Component>>());
+
+	// Component should have the render callbacks
+	if (std::is_base_of_v<RenderComponent, Type>) {
+		renderingComponents.push_back(Type::staticGetKey());
+	}
+}
+
+// Registers a component type with associated events to listen for
+template<ComponentLike Type, typename... Args>
+void TylerDoesntLikeTheGameClass::registerComponent(Args... eventsToListenFor) {
+	registerComponent<Type>();
+	Events::registerListener(Type::staticGetKey(), eventsToListenFor...);
+}
+
+template<ComponentLike Type>
+ComponentRef TylerDoesntLikeTheGameClass::getComponent(EntityRef entity) {
+	ComponentRef result = {};
 	result.entity = entity;
 
 	// Find the map for the given ComponentKey
-	auto type_it = components.find(key);
+	auto type_it = components.find(Type::staticGetKey());
 	if (type_it != components.end()) {
 		// Find the component for the given EntityRef
 		auto entity_it = type_it->second.find(entity);
@@ -32,21 +50,4 @@ ComponentRef getComponent(EntityRef entity, ComponentKey key) {
 	}
 	// If type not found, ptr remains an empty weak_ptr
 	return result;
-}
-
-template<ComponentLike T>
-void TylerDoesntLikeTheGameClass::registerComponent() {
-	components.emplace(T::staticGetKey(), std::unordered_map<EntityRef, std::shared_ptr<Component>>());
-
-	// Component should have the render callbacks
-	if (std::is_base_of_v<RenderComponent, T>) {
-		renderingComponents.push_back(T::staticGetKey());
-	}
-}
-
-// Registers a component type with associated events to listen for
-template<ComponentLike T, typename... Args>
-void TylerDoesntLikeTheGameClass::registerComponent(Args... eventsToListenFor) {
-	registerComponent<T>();
-	Events::registerListener(T::staticGetKey(), eventsToListenFor...);
 }

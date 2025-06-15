@@ -40,11 +40,12 @@ public:
     std::vector<ComponentKey> renderingComponents;
 
     // Registers a component type in the system
-	  template <ComponentLike T>
+	  template <ComponentLike Type>
     void registerComponent();
 
-    template<ComponentLike T, typename... Args>
+    template<ComponentLike Type, typename... Args>
     void registerComponent(Args... eventsToListenFor);
   
-    ComponentRef getComponent(Entity entity, ComponentKey type);
+	template<ComponentLike Type>
+    ComponentRef getComponent(EntityRef entity);
 };
