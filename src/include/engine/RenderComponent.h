@@ -6,9 +6,8 @@
 
 #pragma once
 
-#include "Component.h"
-#include "EntityRef.h"
-#include "Game.h"
+#include "engine/Component.h"
+#include "engine/EntityRef.h"
 #include <SDL3/SDL.h>
 
 class RenderComponent : public Component {

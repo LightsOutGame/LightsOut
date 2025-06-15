@@ -3,7 +3,7 @@
  * Defines the PrinterComponent class, a test component that does nothing but spams "ok, cool function"
  */
 
-#include "Component.h"
+#include "engine/Component.h"
 
 class PrinterComponent : public Component {
 	public:

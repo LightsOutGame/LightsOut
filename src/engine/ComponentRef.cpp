@@ -4,7 +4,7 @@
  * So we can safely reference components with lifecycle checks.
  */
 
-#include "ComponentRef.h"
+#include "engine/ComponentRef.h"
 
 #include <stdexcept>
 

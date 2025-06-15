@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "RenderComponent.h"
+#include "engine/RenderComponent.h"
 
 class SquareRenderComponent : public RenderComponent {
 public:

@@ -9,10 +9,10 @@
 
 #include <SDL3/SDL.h>
 
-#include "ResizeMode.h"
-#include "Component.h"
-#include "EntityRef.h"
-#include "Events.h"
+#include "engine/ResizeMode.h"
+#include "engine/Component.h"
+#include "engine/EntityRef.h"
+#include "engine/Events.h"
 
 class TylerDoesntLikeTheGameClass {
 public:

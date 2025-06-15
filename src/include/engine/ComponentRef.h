@@ -7,8 +7,8 @@
 
 #include <memory>
 
-#include "Component.h"
-#include "EntityRef.h"
+#include "engine/Component.h"
+#include "engine/EntityRef.h"
 
 // Struct for referencing a component and its bound entity
 struct ComponentRef {

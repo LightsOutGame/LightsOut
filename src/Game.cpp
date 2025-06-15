@@ -19,14 +19,14 @@
 #include <functional>
 #include <iostream>
 
-#include "EntityRef.h"
-#include "Events.h"
-#include "Component.h"
-#include "RenderComponent.h"
+#include "engine/EntityRef.h"
+#include "engine/Events.h"
+#include "engine/Component.h"
+#include "engine/RenderComponent.h"
 
-#include "PrinterComponent.h"
-#include "SquareRenderComponent.h"
-#include "AudioTestComponent.h"
+#include "components/PrinterComponent.h"
+#include "components/SquareRenderComponent.h"
+#include "components/AudioTestComponent.h"
 
 // COMPONENT MANAGEMENT
 // Registers a component type in the system

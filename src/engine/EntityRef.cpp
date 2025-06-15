@@ -5,8 +5,8 @@
  * references, and creating new entities.
  */
 
-#include "EntityRef.h"
-#include "EntityControlBlock.h"
+#include "engine/EntityRef.h"
+#include "engine/EntityControlBlock.h"
 
 // Checks if the referenced entity is still active
 bool EntityRef::isAlive() {

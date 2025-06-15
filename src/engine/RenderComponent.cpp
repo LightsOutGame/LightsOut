@@ -4,7 +4,7 @@
  * instead of the traditional callback map.
  */
 
-#include "RenderComponent.h"
+#include "engine/RenderComponent.h"
 
 // Constructor
 RenderComponent::RenderComponent(EntityRef boundEntity) : Component(boundEntity) {}

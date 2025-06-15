@@ -8,13 +8,13 @@
 
 #include <SDL3/SDL_main.h>
 #include <SDL3_mixer/SDL_mixer.h>
-#include "AudioTestComponent.h"
+#include "components/AudioTestComponent.h"
 
 // Callback function
 static void play_audio(Component* self) {
 	std::cout << "wow, another cool function" << std::endl;
 	// Load audio files
-	Mix_Music* backgroundMusic = Mix_LoadMUS("src/audio/Danger.mp3");
+	Mix_Music* backgroundMusic = Mix_LoadMUS("src/assets/audio/Danger.mp3");
 	if (!backgroundMusic) {
 		std::cerr << "Mix_LoadMUS failed: " << SDL_GetError() << std::endl;
 	}

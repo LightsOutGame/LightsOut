@@ -3,7 +3,7 @@
  * Defines the AudioTestComponent class, a test component that does nothing but play danger.mp3
  */
 
-#include "Component.h"
+#include "engine/Component.h"
 
 class AudioTestComponent : public Component {
 	public:

@@ -9,9 +9,9 @@
 
 #include <unordered_map>
 
-#include "ComponentMeta.h"
-#include "EntityRef.h"
-#include "Events.h"
+#include "engine/ComponentMeta.h"
+#include "engine/EntityRef.h"
+#include "engine/Events.h"
 
 class Component;
 

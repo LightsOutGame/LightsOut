@@ -5,7 +5,7 @@
  */
 
 
-#include "SquareRenderComponent.h"
+#include "components/SquareRenderComponent.h"
 
 // Constructor, initializes component
 SquareRenderComponent::SquareRenderComponent(EntityRef boundEntity) : RenderComponent(boundEntity) {

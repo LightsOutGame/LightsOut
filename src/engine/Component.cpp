@@ -5,7 +5,7 @@
  * managing callback mappings for derived components.
  */
 
-#include "Component.h"
+#include "engine/Component.h"
 
 // Constructor, initializes component with a reference to the Component's Entity
 Component::Component(EntityRef boundEntity): entity(boundEntity) {}

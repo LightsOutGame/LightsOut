@@ -1,9 +1,9 @@
-[submodule "vendored/SDL"]
-	path = vendored/SDL
-	url = https://github.com/libsdl-org/SDL.git
-[submodule "vendored/SDL_tff"]
-	path = vendored/SDL_tff
-	url = https://github.com/libsdl-org/SDL_ttf.git
-[submodule "vendored/SDL_mixer"]
-	path = vendored/SDL_mixer
+[submodule "lib/SDL_mixer"]
+	path = lib/SDL_mixer
 	url = https://github.com/libsdl-org/SDL_mixer.git
+[submodule "lib/SDL_ttf"]
+	path = lib/SDL_ttf
+	url = https://github.com/libsdl-org/SDL_ttf.git
+[submodule "lib/SDL"]
+	path = lib/SDL
+	url = https://github.com/libsdl-org/SDL.git

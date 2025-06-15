@@ -6,7 +6,7 @@
 
 #include <iostream>
 
-#include "PrinterComponent.h"
+#include "components/PrinterComponent.h"
 
 // Callback function
 static void my_test_function(Component* self) {

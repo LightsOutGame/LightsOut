@@ -9,7 +9,7 @@
 
 #include <vector>
 
-#include "ComponentMeta.h"
+#include "engine/ComponentMeta.h"
 
 namespace Events {
 	// Enumeration of event types in the system

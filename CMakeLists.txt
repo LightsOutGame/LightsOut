@@ -19,9 +19,9 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIGURATION>")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIGURATION>")
 
 # This assumes the SDL source is available in vendored/SDL
-add_subdirectory(vendored/SDL EXCLUDE_FROM_ALL)
-add_subdirectory(vendored/SDL_ttf EXCLUDE_FROM_ALL)
-add_subdirectory(vendored/SDL_mixer EXCLUDE_FROM_ALL)
+add_subdirectory(lib/SDL EXCLUDE_FROM_ALL)
+add_subdirectory(lib/SDL_ttf EXCLUDE_FROM_ALL)
+add_subdirectory(lib/SDL_mixer EXCLUDE_FROM_ALL)
 
 add_subdirectory(src)
 
