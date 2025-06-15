@@ -11,6 +11,7 @@
 
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
+#include <SDL3_mixer/SDL_mixer.h>
 #include <unordered_map>
 #include <vector>
 #include <algorithm>
@@ -25,6 +26,7 @@
 
 #include "PrinterComponent.h"
 #include "SquareRenderComponent.h"
+#include "AudioTestComponent.h"
 
 // COMPONENT MANAGEMENT
 // Registers a component type in the system
@@ -59,6 +61,28 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
 		SDL_Log("SDL initialization failed: %s", SDL_GetError());
 		return SDL_APP_FAILURE;
 	}
+
+	if (!Mix_Init(MIX_INIT_MP3)) { // Init MP3 functionality (for now)
+		std::cerr << "Mix_Init failed: " << SDL_GetError() << std::endl;
+		SDL_Quit();
+		return SDL_APP_FAILURE;
+
+	}
+
+	SDL_AudioSpec audioSpec = {};
+	audioSpec.freq = 44100;
+	audioSpec.format = SDL_AUDIO_F32;
+	audioSpec.channels = 2;
+	// audioSpec.samples = 2048;
+
+	// Open audio device (no clue what these arguments mean :P)
+	if (!Mix_OpenAudio(0, &audioSpec)) {
+		std::cerr << "Mix_OpenAudio failed: " << SDL_GetError() << std::endl;
+		Mix_Quit();
+		SDL_Quit();
+		return SDL_APP_FAILURE;
+	}
+
 	// Create window
 	game->window = SDL_CreateWindow("Game", 800, 600, SDL_WINDOW_RESIZABLE);
 	if (!game->window) {
@@ -96,6 +120,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
 	// Register components and their event listeners
 	game->registerComponent(PrinterComponent::staticGetKey(), Events::PlayerUpdate);
 	game->registerRenderingComponent(SquareRenderComponent::staticGetKey());
+	game->registerComponent(AudioTestComponent::staticGetKey(), Events::PlayerUpdate);
 
 	// Create an entity and attach components
 	EntityRef e = makeEntity();
@@ -107,6 +132,10 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
 	// Add SquareRenderComponent to entity
 	testComponent = std::make_shared<SquareRenderComponent>(e);
 	game->components.at(testComponent->getKey()).emplace(e, testComponent);
+
+	testComponent = std::make_shared<AudioTestComponent>(e);
+	game->components.at(testComponent->getKey()).emplace(e, testComponent);
+
 
 	return SDL_APP_CONTINUE;
 }

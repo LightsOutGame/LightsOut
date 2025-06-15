@@ -10,7 +10,7 @@ set(SRC "Game.cpp"
 	"ComponentRef.cpp"
 	"RenderComponent.cpp"
     "PrinterComponent.cpp"
-	"SquareRenderComponent.cpp")
+	"SquareRenderComponent.cpp" "AudioTestComponent.cpp")
 
 
 if (WIN32)
