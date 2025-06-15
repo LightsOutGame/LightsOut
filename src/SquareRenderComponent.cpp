@@ -18,7 +18,7 @@ void SquareRenderComponent::onRender(SDL_Renderer* renderer) const
 	// Set draw color to red
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
 	// Define square rectangle
-    SDL_FRect rect = {0, 0, 100, 100};
+    SDL_FRect rect = {0, 0, 150, 100};
 	// Draw square outline
     SDL_RenderRect(renderer, &rect);
 };

@@ -29,5 +29,7 @@ target_compile_features(LightsOut PUBLIC cxx_std_20)
 
 # Link to the actual SDL3 library.
 target_link_libraries(LightsOut PRIVATE SDL3::SDL3)
+target_link_libraries(LightsOut PRIVATE SDL3_ttf::SDL3_ttf)
+target_link_libraries(LightsOut PRIVATE SDL3_mixer::SDL3_mixer)
 
 target_include_directories(LightsOut PRIVATE "include")
