@@ -9,7 +9,7 @@ file(GLOB_RECURSE ENGINE_SRC ${CMAKE_SOURCE_DIR}/src/engine/*.cpp)
 file(GLOB_RECURSE COMPONENTS_SRC ${CMAKE_SOURCE_DIR}/src/components/*.cpp)
 file(GLOB_RECURSE PHYSICS_SRC ${CMAKE_SOURCE_DIR}/src/physics/*.cpp)
 
-set(SRC ${ENGINE_SRC} ${COMPONENTS_SRC} ${PHYSICS_SRC} "Game.cpp")
+set(SRC ${ENGINE_SRC} ${COMPONENTS_SRC} ${PHYSICS_SRC} "Game.cpp" "Setup.cpp")
 
 
 if (WIN32)

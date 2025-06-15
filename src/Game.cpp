@@ -24,9 +24,8 @@
 #include "engine/Component.h"
 #include "engine/RenderComponent.h"
 
-#include "components/PrinterComponent.h"
-#include "components/SquareRenderComponent.h"
-#include "components/AudioTestComponent.h"
+#include "Setup.h"
+
 
 // COMPONENT MANAGEMENT
 // Registers a component type in the system
@@ -102,39 +101,8 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
 		return SDL_APP_FAILURE;
 	}
 
-	// // Register some components and callbacks
-	// auto entity = EntityRef();
-	// auto component = std::make_shared<Component>();
-	// game->components["component1"] = {entity, component};
-	// component->registerEventCallback(Events::EventType::PlayerUpdate, [](void* data) {
-	//     SDL_Log("PlayerUpdate callback triggered");
-	// });
-	// component->registerRenderCallback([](SDL_Renderer* r) {
-	//     SDL_SetRenderDrawColor(r, 255, 0, 0, 255);
-	//     SDL_FRect fRect = {100.0f, 100.0f, 50.0f, 50.0f};
-	//     SDL_RenderFillRect(r, &fRect);
-	// });
-	//
-
-	// Register components and their event listeners
-	game->registerComponent<PrinterComponent>(Events::PlayerUpdate);
-	game->registerComponent<SquareRenderComponent>();
-	game->registerComponent<AudioTestComponent>(Events::PlayerUpdate);
-
-	// Create an entity and attach components
-	EntityRef e = makeEntity();
-
-	// Add PrinterComponent to entity
-	std::shared_ptr<Component> testComponent = std::make_shared<PrinterComponent>(e);
-	game->components.at(testComponent->getKey()).emplace(e, testComponent);
-
-	// Add SquareRenderComponent to entity
-	testComponent = std::make_shared<SquareRenderComponent>(e);
-	game->components.at(testComponent->getKey()).emplace(e, testComponent);
-
-	testComponent = std::make_shared<AudioTestComponent>(e);
-	game->components.at(testComponent->getKey()).emplace(e, testComponent);
-
+	InitializeComponentRegistry(game);
+	InitializeScene(game);
 
 	return SDL_APP_CONTINUE;
 }

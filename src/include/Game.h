@@ -20,6 +20,7 @@ public:
     TylerDoesntLikeTheGameClass() = default;
 
     // Member variables
+	
     // Pointer to the SDL window
     SDL_Window* window = nullptr;
     // Pointer to the SDL renderer
