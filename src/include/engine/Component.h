@@ -46,3 +46,10 @@ class Component {
 	public: \
 	static constexpr ComponentKey staticGetKey() { return #key;} \
 	ComponentKey getKey() const override { return staticGetKey(); }
+
+
+// Simple way of ensuring that types match requirements of a component
+template<class T>
+concept ComponentLike = std::is_base_of_v<Component, T> && requires {
+	(ComponentKey)T::staticGetKey();
+};

@@ -38,13 +38,10 @@ public:
     std::vector<ComponentKey> renderingComponents;
 
     // Registers a component type in the system
-    void registerComponent(ComponentKey compKey);
+	template <ComponentLike T>
+    void registerComponent();
 
     // Registers a component type with associated events to listen for
-    template<typename... Args>
-    void registerComponent(ComponentKey compKey, Args... eventsToListenFor);
-
-    // Registers a component type as a rendering component with associated events
-    template<typename... Args>
-    void registerRenderingComponent(ComponentKey compKey, Args... eventsToListenFor);
+    template<ComponentLike T, typename... Args>
+    void registerComponent(Args... eventsToListenFor);
 };

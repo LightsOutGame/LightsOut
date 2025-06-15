@@ -30,22 +30,21 @@
 
 // COMPONENT MANAGEMENT
 // Registers a component type in the system
-void TylerDoesntLikeTheGameClass::registerComponent(ComponentKey compKey) {
-	components.emplace(compKey, std::unordered_map<EntityRef, std::shared_ptr<Component>>());
+template<ComponentLike T>
+void TylerDoesntLikeTheGameClass::registerComponent() {
+	components.emplace(T::staticGetKey(), std::unordered_map<EntityRef, std::shared_ptr<Component>>());
+
+	// Component should have the render callbacks
+	if (std::is_base_of_v<RenderComponent, T>) {
+		renderingComponents.push_back(T::staticGetKey());
+	}
 }
 
 // Registers a component type with associated events to listen for
-template<typename... Args>
-void TylerDoesntLikeTheGameClass::registerComponent(ComponentKey compKey, Args... eventsToListenFor) {
-	components.emplace(compKey, std::unordered_map<EntityRef, std::shared_ptr<Component>>());
-	Events::registerListener(compKey, eventsToListenFor...);
-}
-
-// Registers a component type as a rendering component with associated events
-template<typename... Args>
-void TylerDoesntLikeTheGameClass::registerRenderingComponent(ComponentKey compKey, Args... eventsToListenFor) {
-	renderingComponents.push_back(compKey);
-	registerComponent(compKey, eventsToListenFor...);
+template<ComponentLike T, typename... Args>
+void TylerDoesntLikeTheGameClass::registerComponent(Args... eventsToListenFor) {
+	registerComponent<T>();
+	Events::registerListener(T::staticGetKey(), eventsToListenFor...);
 }
 
 // SDL callback functions
@@ -118,9 +117,9 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
 	//
 
 	// Register components and their event listeners
-	game->registerComponent(PrinterComponent::staticGetKey(), Events::PlayerUpdate);
-	game->registerRenderingComponent(SquareRenderComponent::staticGetKey());
-	game->registerComponent(AudioTestComponent::staticGetKey(), Events::PlayerUpdate);
+	game->registerComponent<PrinterComponent>(Events::PlayerUpdate);
+	game->registerComponent<SquareRenderComponent>();
+	game->registerComponent<AudioTestComponent>(Events::PlayerUpdate);
 
 	// Create an entity and attach components
 	EntityRef e = makeEntity();
