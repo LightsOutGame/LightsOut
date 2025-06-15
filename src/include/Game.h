@@ -13,6 +13,7 @@
 #include "engine/Component.h"
 #include "engine/EntityRef.h"
 #include "engine/Events.h"
+#include "engine/ComponentRef.h"
 
 class TylerDoesntLikeTheGameClass {
 public:
@@ -48,3 +49,5 @@ public:
     template<typename... Args>
     void registerRenderingComponent(ComponentKey compKey, Args... eventsToListenFor);
 };
+
+ComponentRef getComponent(Entity entity, ComponentKey type);

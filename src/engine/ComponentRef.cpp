@@ -10,6 +10,7 @@
 
 // Dereference operator to access the component
 Component& ComponentRef::operator*() {
+
 	// Check if the entity is still alive
 	if (!entity.isAlive()) {
 		throw std::runtime_error("Attempted to reference component of a dead entity");

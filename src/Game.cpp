@@ -48,6 +48,26 @@ void TylerDoesntLikeTheGameClass::registerRenderingComponent(ComponentKey compKe
 	registerComponent(compKey, eventsToListenFor...);
 }
 
+ComponentRef getComponent(EntityRef entity, ComponentKey key) {
+	ComponentRef result;
+	result.entity = entity;
+
+	// Find the map for the given ComponentKey
+	auto type_it = components.find(key);
+	if (type_it != components.end()) {
+		// Find the component for the given EntityRef
+		auto entity_it = type_it->second.find(entity);
+		if (entity_it != type_it->second.end()) {
+			// Assign the shared_ptr to a weak_ptr
+			result.ptr = entity_it->second;
+		}
+		// If not found, ptr remains an empty weak_ptr
+	}
+	// If type not found, ptr remains an empty weak_ptr
+	return result;
+}
+
+
 // SDL callback functions
 
 // Initializes the game and SDL resources
@@ -89,7 +109,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
 		SDL_Log("Window creation failed: %s", SDL_GetError());
 		return SDL_APP_FAILURE;
 	}
-  // Create renderer
+    // Create renderer
 	game->renderer = SDL_CreateRenderer(game->window, NULL);
 	if (!game->renderer) {
 		SDL_Log("Renderer creation failed: %s", SDL_GetError());
