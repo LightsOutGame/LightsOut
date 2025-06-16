@@ -15,7 +15,7 @@
 #include "Game.h"
 #include "Setup.h"
 
-#include "engine/RenderComponent.h"
+#include "engine/Renderable.h"
 
 // SDL callback functions
 
@@ -120,7 +120,7 @@ SDL_AppResult SDL_AppIterate(void* appstate) {
 		std::unordered_map<EntityRef, std::shared_ptr<Component>>& cmptInstances = game->components.at(key);
 		for (auto& [entityRef, component] : cmptInstances) {
 			// Cast to RenderComponent for rendering
-			RenderComponent* r = (RenderComponent*)component.get();
+			Renderable* r = (Renderable*)component.get();
 			r->onRender(game->renderer);
 		}
 	}

@@ -6,9 +6,10 @@
 
 #pragma once
 
-#include "engine/RenderComponent.h"
+#include "engine/Component.h"
+#include "engine/Renderable.h"
 
-class SquareRenderComponent : public RenderComponent {
+class SquareRenderComponent : public Component, public Renderable {
 public:
     // Constructor, binds component to an entity
     SquareRenderComponent(EntityRef boundEntity);

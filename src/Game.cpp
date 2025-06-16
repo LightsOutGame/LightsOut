@@ -10,7 +10,7 @@
 #include "engine/EntityRef.h"
 #include "engine/Events.h"
 #include "engine/Component.h"
-#include "engine/RenderComponent.h"
+#include "engine/Renderable.h"
 
 template<ComponentLike Type>
 void TylerDoesntLikeTheGameClass::registerComponent() {
