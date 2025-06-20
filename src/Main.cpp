@@ -16,6 +16,9 @@
 #include "Setup.h"
 
 #include "engine/Renderable.h"
+#include "engine/AudioPlayer.h"
+
+AudioPlayer* testPlayer;
 
 // SDL callback functions
 
@@ -74,6 +77,8 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
 
 	InitializeComponentRegistry(game);
 	InitializeScene(game);
+
+	testPlayer = new AudioPlayer("src/assets/Danger.wav");
 
 	return SDL_APP_CONTINUE;
 }
@@ -181,6 +186,8 @@ SDL_AppResult SDL_AppIterate(void* appstate) {
 
 // Cleans up game resources
 void SDL_AppQuit(void* appstate, SDL_AppResult result) {
+	delete testPlayer;
+
 	TylerDoesntLikeTheGameClass* game = static_cast<TylerDoesntLikeTheGameClass*>(appstate);
 	if (!game) return;
 	// Destroy SDL resources

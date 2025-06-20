@@ -16,7 +16,6 @@ public:
 
     // Audio effects
     void setVolume(float volume); // 0.0f to 1.0f
-    void setPanning(float pan);   // -1.0f (left) to 1.0f (right)
 
 private:
     SDL_AudioStream* stream_;
