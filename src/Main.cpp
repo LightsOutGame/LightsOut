@@ -78,7 +78,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
 	InitializeComponentRegistry(game);
 	InitializeScene(game);
 
-	testPlayer = new AudioPlayer("src/assets/Danger.wav");
+	testPlayer = new AudioPlayer("C:\\Users\\Tyler Johnson\\Documents\\GitHub\\LightsOut\\src\\assets\\audio\\Danger.wav");
 
 	return SDL_APP_CONTINUE;
 }

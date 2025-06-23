@@ -24,7 +24,10 @@ namespace Events {
 
 	// Registers a component as a listener for multiple events
 	template<typename... Args>
-	void registerListener(ComponentKey listener, EventType evt, Args... eventsToListenFor);
+	void registerListener(ComponentKey listener, EventType evt, Args... eventsToListenFor) {
+		registerListener(listener, evt);
+		registerListener(listener, static_cast<Events::EventType>(eventsToListenFor)...);
+	}
 
 	// Retrieves the list of components listening for a specific event
 	std::vector<ComponentKey>& getEventListeners(EventType event);

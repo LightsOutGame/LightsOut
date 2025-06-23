@@ -17,13 +17,6 @@ namespace Events {
         listeners[evt].push_back(listener);
     }
 
-    // Registers a component as a listener for multiple events
-    template<typename... Args>
-    void registerListener(ComponentKey listener, EventType evt, Args... eventsToListenFor) {
-        listeners[evt].push_back(listener);
-        registerListener(listener, eventsToListenFor...);
-    }
-
     // Retrieves the list of components listening for a specific event
     std::vector<ComponentKey>& getEventListeners(EventType event) {
         return listeners[event];

@@ -1,5 +1,5 @@
-/*
-* Game.h
+/**
+ * Game.h
  * Defines the TylerDoesntLikeTheGameClass, which contains references to the window, renderer, and texture of the game.
  * It also handles component registration for rendering and event handling.
  */
@@ -14,6 +14,7 @@
 #include "engine/EntityRef.h"
 #include "engine/Events.h"
 #include "engine/ComponentRef.h"
+#include "engine/Renderable.h"
 
 
 class TylerDoesntLikeTheGameClass {
@@ -53,3 +54,40 @@ public:
 	template<ComponentLike Type>
     ComponentRef getComponent(EntityRef entity);
 };
+
+// TEMPLATE DEFINITIONS
+template<ComponentLike Type>
+void TylerDoesntLikeTheGameClass::registerComponent() {
+	components.emplace(Type::staticGetKey(), std::unordered_map<EntityRef, std::shared_ptr<Component>>());
+
+	// Component should have the render callbacks
+	if (std::is_base_of_v<Renderable, Type>) {
+		renderingComponents.push_back(Type::staticGetKey());
+	}
+}
+
+template<ComponentLike Type, typename... Args>
+void TylerDoesntLikeTheGameClass::registerComponent(Args... eventsToListenFor) {
+	registerComponent<Type>();
+	Events::registerListener(Type::staticGetKey(), static_cast<Events::EventType>(eventsToListenFor)...);
+}
+
+template<ComponentLike Type>
+ComponentRef TylerDoesntLikeTheGameClass::getComponent(EntityRef entity) {
+	ComponentRef result = {};
+	result.entity = entity;
+
+	// Find the map for the given ComponentKey
+	auto type_it = components.find(Type::staticGetKey());
+	if (type_it != components.end()) {
+		// Find the component for the given EntityRef
+		auto entity_it = type_it->second.find(entity);
+		if (entity_it != type_it->second.end()) {
+			// Assign the shared_ptr to a weak_ptr
+			result.ptr = entity_it->second;
+		}
+		// If not found, ptr remains an empty weak_ptr
+	}
+	// If type not found, ptr remains an empty weak_ptr
+	return result;
+}

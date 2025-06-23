@@ -10,6 +10,7 @@ AudioPlayer::AudioPlayer(const std::string& filePath) : stream_(nullptr), wavBuf
 
     // Load WAV file
     if (!SDL_LoadWAV(filePath.c_str(), &wavSpec_, &wavBuffer_, &wavLength_)) {
+		SDL_Log(SDL_GetError());
         throw std::runtime_error("SDL_LoadWAV failed: " + std::string(SDL_GetError()));
     }
 
