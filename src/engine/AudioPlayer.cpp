@@ -1,6 +1,6 @@
 #include "engine/AudioPlayer.h"
-#include <stdexcept>
 #include <iostream>
+#include "Utils.h"
 
 // Static member initialization
 SDL_AudioDeviceID AudioPlayer::device_ = 0;
@@ -10,8 +10,7 @@ AudioPlayer::AudioPlayer(const std::string& filePath) : stream_(nullptr), wavBuf
 
     // Load WAV file
     if (!SDL_LoadWAV(filePath.c_str(), &wavSpec_, &wavBuffer_, &wavLength_)) {
-		SDL_Log(SDL_GetError());
-        throw std::runtime_error("SDL_LoadWAV failed: " + std::string(SDL_GetError()));
+		RaiseError("SDL_LoadWAV failed: " + std::string(SDL_GetError()));
     }
 
     // Initialize shared device if not open
@@ -25,15 +24,15 @@ AudioPlayer::AudioPlayer(const std::string& filePath) : stream_(nullptr), wavBuf
     if (!stream_) {
         SDL_free(wavBuffer_);
         closeDevice();
-        throw std::runtime_error("SDL_CreateAudioStream failed: " + std::string(SDL_GetError()));
+        RaiseError("SDL_CreateAudioStream failed: " + std::string(SDL_GetError()));
     }
 
     // Bind stream to shared device
-    if (SDL_BindAudioStreams(device_, &stream_, 1)) {
+    if (!SDL_BindAudioStreams(device_, &stream_, 1)) {
         SDL_DestroyAudioStream(stream_);
         SDL_free(wavBuffer_);
         closeDevice();
-        throw std::runtime_error("SDL_BindAudioStreams failed: " + std::string(SDL_GetError()));
+        RaiseError("SDL_BindAudioStreams failed: " + std::string(SDL_GetError()));
     }
 
     instanceCount_++;
@@ -52,9 +51,9 @@ AudioPlayer::~AudioPlayer() {
 
 void AudioPlayer::initDevice() {
     SDL_AudioSpec deviceSpec = { SDL_AUDIO_F32, 2, 44100 };
-    device_ = SDL_OpenAudioDevice(NULL, &deviceSpec);
+    device_ = SDL_OpenAudioDevice(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &deviceSpec);
     if (!device_) {
-        throw std::runtime_error("SDL_OpenAudioDevice failed: " + std::string(SDL_GetError()));
+        RaiseError("SDL_OpenAudioDevice failed: " + std::string(SDL_GetError()));
     }
     SDL_ResumeAudioDevice(device_); // Start device
 }
