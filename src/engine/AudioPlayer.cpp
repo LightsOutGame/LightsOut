@@ -67,7 +67,7 @@ void AudioPlayer::closeDevice() {
 
 void AudioPlayer::play() {
     stop(); // Clear and restart
-    if (SDL_PutAudioStreamData(stream_, wavBuffer_, wavLength_)) {
+    if (!SDL_PutAudioStreamData(stream_, wavBuffer_, wavLength_)) {
         std::cerr << "SDL_PutAudioStreamData failed: " << SDL_GetError() << std::endl;
         return;
     }
