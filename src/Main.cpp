@@ -78,7 +78,8 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
 	InitializeComponentRegistry(game);
 	InitializeScene(game);
 
-	// testPlayer = new AudioPlayer("C:\\Users\\Tyler Johnson\\Documents\\GitHub\\LightsOut\\src\\assets\\audio\\Danger.wav");
+	testPlayer = new AudioPlayer("C:\\Users\\Tyler Johnson\\Documents\\GitHub\\LightsOut\\src\\assets\\audio\\Danger.wav");
+	testPlayer->play();
 
 	return SDL_APP_CONTINUE;
 }
@@ -125,7 +126,7 @@ SDL_AppResult SDL_AppIterate(void* appstate) {
 		std::unordered_map<EntityRef, std::shared_ptr<Component>>& cmptInstances = game->components.at(key);
 		for (auto& [entityRef, component] : cmptInstances) {
 			// Cast to RenderComponent for rendering
-			Renderable* r = (Renderable*)component.get();
+			Renderable* r = dynamic_cast<Renderable*>(component.get());
 			r->onRender(game->renderer);
 		}
 	}

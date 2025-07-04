@@ -18,11 +18,7 @@ void InitializeScene(TylerDoesntLikeTheGameClass* game) {
 	// Create an entity and attach components
 	EntityRef e = makeEntity();
 
-	// Add PrinterComponent to entity
-	std::shared_ptr<Component> testComponent = std::make_shared<PrinterComponent>(e);
-	game->components.at(testComponent->getKey()).emplace(e, testComponent);
-
 	// Add SquareRenderComponent to entity
-	testComponent = std::make_shared<SquareRenderComponent>(e);
+	std::shared_ptr<Component> testComponent = std::make_shared<SquareRenderComponent>(e);
 	game->components.at(testComponent->getKey()).emplace(e, testComponent);
 }
