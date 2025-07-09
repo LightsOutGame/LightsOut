@@ -8,7 +8,6 @@
 
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
-#include <SDL3_mixer/SDL_mixer.h>
 
 #include <iostream>
 
@@ -17,8 +16,7 @@
 
 #include "engine/Renderable.h"
 #include "engine/AudioPlayer.h"
-
-AudioPlayer* testPlayer;
+#include "engine/AudioEngine.h"
 
 // SDL callback functions
 
@@ -29,29 +27,8 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
 	TylerDoesntLikeTheGameClass* game = static_cast<TylerDoesntLikeTheGameClass*>(*appstate);
 
 	// Initialize SDL video subsystem
-	if (!SDL_Init(SDL_INIT_VIDEO)) {
+	if (!SDL_InitSubSystem(SDL_INIT_VIDEO | SDL_INIT_AUDIO)) {
 		SDL_Log("SDL initialization failed: %s", SDL_GetError());
-		return SDL_APP_FAILURE;
-	}
-
-	if (!Mix_Init(MIX_INIT_MP3)) { // Init MP3 functionality (for now)
-		std::cerr << "Mix_Init failed: " << SDL_GetError() << std::endl;
-		SDL_Quit();
-		return SDL_APP_FAILURE;
-
-	}
-
-	SDL_AudioSpec audioSpec = {};
-	audioSpec.freq = 44100;
-	audioSpec.format = SDL_AUDIO_F32;
-	audioSpec.channels = 2;
-	// audioSpec.samples = 2048;
-
-	// Open audio device (no clue what these arguments mean :P)
-	if (!Mix_OpenAudio(0, &audioSpec)) {
-		std::cerr << "Mix_OpenAudio failed: " << SDL_GetError() << std::endl;
-		Mix_Quit();
-		SDL_Quit();
 		return SDL_APP_FAILURE;
 	}
 
@@ -75,11 +52,11 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
 		return SDL_APP_FAILURE;
 	}
 
+	// Initialize Audio system
+	AudioEngine::start(0.1f);
+
 	InitializeComponentRegistry(game);
 	InitializeScene(game);
-
-	testPlayer = new AudioPlayer("C:\\Users\\Tyler Johnson\\Documents\\GitHub\\LightsOut\\src\\assets\\audio\\Danger.wav");
-	testPlayer->play();
 
 	return SDL_APP_CONTINUE;
 }
@@ -187,8 +164,6 @@ SDL_AppResult SDL_AppIterate(void* appstate) {
 
 // Cleans up game resources
 void SDL_AppQuit(void* appstate, SDL_AppResult result) {
-	delete testPlayer;
-
 	TylerDoesntLikeTheGameClass* game = static_cast<TylerDoesntLikeTheGameClass*>(appstate);
 	if (!game) return;
 	// Destroy SDL resources

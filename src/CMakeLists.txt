@@ -5,9 +5,9 @@
 # Add source to this project's executable.
 
 
-file(GLOB_RECURSE ENGINE_SRC ${CMAKE_SOURCE_DIR}/src/engine/*.cpp)
-file(GLOB_RECURSE COMPONENTS_SRC ${CMAKE_SOURCE_DIR}/src/components/*.cpp)
-file(GLOB_RECURSE PHYSICS_SRC ${CMAKE_SOURCE_DIR}/src/physics/*.cpp)
+set(ENGINE_SRC "engine/EntityRef.cpp" "engine/Component.cpp" "engine/ComponentRef.cpp" "engine/Events.cpp" "engine/AudioPlayer.cpp" "engine/AudioEngine.cpp")
+set(COMPONENTS_SRC "components/PrinterComponent.cpp" "components/SquareRenderComponent.cpp")
+set(PHYSICS_SRC)
 
 set(SRC ${ENGINE_SRC} ${COMPONENTS_SRC} ${PHYSICS_SRC} "Game.cpp" "Setup.cpp" "Main.cpp" "Utils.cpp")
 
@@ -29,7 +29,14 @@ target_compile_features(LightsOut PUBLIC cxx_std_20)
 # Link to the libraries used.
 target_link_libraries(LightsOut PRIVATE SDL3::SDL3)
 target_link_libraries(LightsOut PRIVATE SDL3_ttf::SDL3_ttf)
-target_link_libraries(LightsOut PRIVATE SDL3_mixer::SDL3_mixer)
 
 
 target_include_directories(LightsOut PRIVATE "include")
+
+# Asset/Resource files
+add_custom_command(
+        TARGET LightsOut POST_BUILD
+		COMMENT "Copying resource files: ${CMAKE_SOURCE_DIR}/assets -> $<TARGET_FILE_DIR:LightsOut>/assets"
+        COMMAND ${CMAKE_COMMAND} -E copy_directory 
+		        ${CMAKE_SOURCE_DIR}/src/assets
+				$<TARGET_FILE_DIR:LightsOut>/assets)
