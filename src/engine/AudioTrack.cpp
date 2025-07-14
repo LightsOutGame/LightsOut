@@ -1,11 +1,11 @@
-#include "AudioTrack.h"
+#include "engine/AudioTrack.h"
 
 #include <stdlib.h>
 #include <cstring> // why is memcpy in here?
 #include <exception>
 
 AudioTrack::AudioTrack(int initialCapacity) {
-	buffer = malloc(initialCapacity);
+	buffer = (uchar*) malloc(initialCapacity);
 	length = 0;
 	capacity = initialCapacity;
 }
@@ -16,10 +16,10 @@ AudioTrack::~AudioTrack() {
 
 void AudioTrack::add(uchar* data, int dataLength) {
 	if (dataLength > capacity) {
-		newBuffer = realloc(buffer, capacity * 2);
+		uchar* newBuffer = (uchar*) realloc(buffer, dataLength);
 
 		if (!newBuffer) {
-			throw new std::exception("Not enough room to expand Audio Track")
+			throw new std::exception("Not enough room to expand Audio Track");
 		}
 
 		buffer = newBuffer;
@@ -45,9 +45,18 @@ uchar* AudioTrack::remove(int amountRemoved) {
 	if (amountRemoved > length)
 		throw new std::exception("Audio Track does not contain enough data");
 
-	uchar* dest = malloc(amountRemoved);
+	uchar* dest = (uchar*) malloc(amountRemoved);
 
 	memcpy(dest, buffer, amountRemoved);
 
+	length -= amountRemoved;
+
+	memmove(buffer, buffer + amountRemoved, length);
+
+
 	return dest;
+}
+
+bool AudioTrack::isEmpty() {
+	return length == 0;
 }

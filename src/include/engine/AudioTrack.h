@@ -21,4 +21,6 @@ public:
 	   pushing the rest forward in the queue. Returns a pointer to the removed data.
 	 */
 	uchar* remove(int amountRemoved);
+
+	bool isEmpty();
 };

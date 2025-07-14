@@ -36,7 +36,7 @@ target_include_directories(LightsOut PRIVATE "include")
 # Asset/Resource files
 add_custom_command(
         TARGET LightsOut POST_BUILD
-		COMMENT "Copying resource files: ${CMAKE_SOURCE_DIR}/assets -> $<TARGET_FILE_DIR:LightsOut>/assets"
+		COMMENT "Copying resource files: ${CMAKE_SOURCE_DIR}/src/assets -> $<TARGET_FILE_DIR:LightsOut>/assets"
         COMMAND ${CMAKE_COMMAND} -E copy_directory 
 		        ${CMAKE_SOURCE_DIR}/src/assets
 				$<TARGET_FILE_DIR:LightsOut>/assets)
