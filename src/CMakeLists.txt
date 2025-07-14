@@ -5,7 +5,7 @@
 # Add source to this project's executable.
 
 
-set(ENGINE_SRC "engine/EntityRef.cpp" "engine/Component.cpp" "engine/ComponentRef.cpp" "engine/Events.cpp" "engine/AudioPlayer.cpp" "engine/AudioEngine.cpp")
+set(ENGINE_SRC "engine/EntityRef.cpp" "engine/Component.cpp" "engine/ComponentRef.cpp" "engine/Events.cpp" "engine/AudioPlayer.cpp" "engine/AudioEngine.cpp" "engine/AudioTrack.cpp")
 set(COMPONENTS_SRC "components/PrinterComponent.cpp" "components/SquareRenderComponent.cpp")
 set(PHYSICS_SRC)
 
