@@ -18,9 +18,11 @@ public:
 	void add(uchar* data, int dataLength);
 
 	/* Removes the specified amount of data from the front of the track,
-	   pushing the rest forward in the queue. Returns a pointer to the removed data.
+	   pushing the rest forward in the queue and storing what was removed in the destination pointer.
+	   If more data is requested than is stored, it removes all remaining data.
+	   Returns the amount of data removed.
 	 */
-	uchar* remove(int amountRemoved);
+	int remove(uchar** dest, int amountRemoved);
 
 	bool isEmpty();
 };

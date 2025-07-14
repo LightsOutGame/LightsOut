@@ -81,16 +81,34 @@ namespace AudioEngine {
 		while (!myTrack.isEmpty()) {
 			time_t iterStart = time(nullptr);
 
-			uchar* dataThisFrame = myTrack.remove(bytesEachIteration);
-			if (!SDL_PutAudioStreamData(stream_, dataThisFrame, bytesEachIteration))
+			uchar* dataThisFrame;
+			bool fileEnded = false;
+			int bytesToQueue;
+			if (bytesToQueue = myTrack.remove(&dataThisFrame, bytesEachIteration) != bytesEachIteration) {
+				fileEnded = true;
+			}
+
+			if (!SDL_PutAudioStreamData(stream_, dataThisFrame, bytesToQueue))
 				RaiseError("We got a problem: " + std::string(SDL_GetError()));
 			std::cout << "Frame complete. " << std::endl;
 
 			time_t iterEnd = time(nullptr);
 
+			if (fileEnded) {
+				break;
+			}
+
 			// sleep for the rest of the iteration
 			long milliRemaining = (iterationDuration * waitMultiplier - difftime(iterEnd, iterStart)) * 1000L;
-			std::this_thread::sleep_for(std::chrono::milliseconds(milliRemaining));
+			if (milliRemaining > 0)
+				std::this_thread::sleep_for(std::chrono::milliseconds(milliRemaining));
 		}
+
+		// Track is finished, wait for stream to end
+		while (SDL_GetAudioStreamQueued(stream_)) {
+			std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+		}
+
+		std::cout << "Done!" << std::endl;
 	}
 }

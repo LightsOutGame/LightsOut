@@ -39,22 +39,22 @@ void AudioTrack::add(uchar* data, int dataLength) {
 		length = dataLength;
 }
 
-uchar* AudioTrack::remove(int amountRemoved) {
+int AudioTrack::remove(uchar** dest, int amountRemoved) {
 	if (amountRemoved < 0)
 		throw new std::exception("Cannot remove negative amount of data");
-	if (amountRemoved > length)
-		throw new std::exception("Audio Track does not contain enough data");
 
-	uchar* dest = (uchar*) malloc(amountRemoved);
+	if (length < amountRemoved)
+		amountRemoved = length;
 
-	memcpy(dest, buffer, amountRemoved);
+	// Save the data in the given block
+	*dest = (uchar*) malloc(amountRemoved);
+	memcpy(*dest, buffer, amountRemoved);
 
+	// Move everything else forward in the queue
 	length -= amountRemoved;
-
 	memmove(buffer, buffer + amountRemoved, length);
 
-
-	return dest;
+	return amountRemoved;
 }
 
 bool AudioTrack::isEmpty() {
