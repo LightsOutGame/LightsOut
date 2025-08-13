@@ -23,6 +23,7 @@ void AudioTrack::add(uchar* data, int dataLength) {
 		}
 
 		buffer = newBuffer;
+		capacity = dataLength;
 	}
 
 	// Layer new data over any existing data we have

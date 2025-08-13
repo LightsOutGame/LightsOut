@@ -7,16 +7,12 @@
 #pragma once
 
 #include "engine/Component.h"
-#include "engine/Renderable.h"
 
-class SquareRenderComponent : public Component, public Renderable {
+class SquareRenderComponent : public Component {
 public:
     // Constructor, binds component to an entity
     SquareRenderComponent(EntityRef boundEntity);
 
     // Defines the unique key for this component type
     KEYDEF(square)
-
-    // Renders the square shape using the provided SDL renderer
-    void onRender(SDL_Renderer* renderer) const override;
 };

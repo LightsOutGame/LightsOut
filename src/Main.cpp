@@ -14,9 +14,9 @@
 #include "Game.h"
 #include "Setup.h"
 
-#include "engine/Renderable.h"
-#include "engine/AudioPlayer.h"
-#include "engine/AudioEngine.h"
+// Game Systems
+#include "systems/RenderSystem.h"
+#include "systems/AudioSystem.h"
 
 // SDL callback functions
 
@@ -53,7 +53,7 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
 	}
 
 	// Initialize Audio system
-	AudioEngine::start(0.1f);
+	AudioSystem::start(0.1f);
 
 	InitializeComponentRegistry(game);
 	InitializeScene(game);
@@ -78,18 +78,8 @@ SDL_AppResult SDL_AppIterate(void* appstate) {
 	// Exit if game is not running
 	if (!game->running) return SDL_APP_SUCCESS;
 
-	// Process all events
-	for (int i = 0; i < Events::EventType::COUNT; i++) {
-		Events::EventType eventType = static_cast<Events::EventType>(i);
-		std::vector<ComponentKey>& listeningComponents = Events::getEventListeners(eventType);
-		// Trigger events for all listening components
-		for (const ComponentKey& key : listeningComponents) {
-			std::unordered_map<EntityRef, std::shared_ptr<Component>>& cmptInstances = game->components.at(key);
-			for (auto& [entityRef, component] : cmptInstances) {
-				component->triggerEvent(eventType);
-			}
-		}
-	}
+	// Process systems
+	// empty for now because we have none
 
 	// Rendering
 	// Set render target to buffer texture
@@ -98,15 +88,8 @@ SDL_AppResult SDL_AppIterate(void* appstate) {
 	SDL_SetRenderDrawColor(game->renderer, 0, 0, 0, 255);
 	SDL_RenderClear(game->renderer);
 
-	// Render all rendering components
-	for (const ComponentKey& key : game->renderingComponents) {
-		std::unordered_map<EntityRef, std::shared_ptr<Component>>& cmptInstances = game->components.at(key);
-		for (auto& [entityRef, component] : cmptInstances) {
-			// Cast to RenderComponent for rendering
-			Renderable* r = dynamic_cast<Renderable*>(component.get());
-			r->onRender(game->renderer);
-		}
-	}
+	// Render scene to the buffer
+	RenderSystem::run(game);
 
 	// Handle window resize scaling
 	SDL_SetRenderTarget(game->renderer, nullptr);
@@ -166,11 +149,16 @@ SDL_AppResult SDL_AppIterate(void* appstate) {
 void SDL_AppQuit(void* appstate, SDL_AppResult result) {
 	TylerDoesntLikeTheGameClass* game = static_cast<TylerDoesntLikeTheGameClass*>(appstate);
 	if (!game) return;
+
+	// Stop extra threads
+	AudioSystem::cleanup();
+
 	// Destroy SDL resources
 	if (game->bufferTexture) SDL_DestroyTexture(game->bufferTexture);
 	if (game->renderer) SDL_DestroyRenderer(game->renderer);
 	if (game->window) SDL_DestroyWindow(game->window);
 	SDL_Quit();
+
 	// Delete game instance
 	delete game;
 }

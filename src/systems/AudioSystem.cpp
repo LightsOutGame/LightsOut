@@ -1,4 +1,4 @@
-#include "engine/AudioEngine.h"
+#include "systems/AudioSystem.h"
 
 #include <SDL3/SDL.h>
 #include <thread>
@@ -10,19 +10,11 @@
 #include "Utils.h"
 #include "engine/AudioTrack.h"
 
-namespace AudioEngine {
-	std::thread audioThread;
+namespace AudioSystem {
+	SDL_Thread* audioThread;
 	float targetInterval;
 
-	void run(); // Forward declaration
-
-	void start(float targetInterval) {
-		AudioEngine::targetInterval = targetInterval;
-
-		audioThread = std::thread(run);
-	}
-
-	void run() {
+	int run(void* data) {
 		SDL_AudioStream* stream_;
 		Uint8* wavBuffer_;
 		Uint32 wavLength_;
@@ -73,42 +65,56 @@ namespace AudioEngine {
 		AudioTrack myTrack(64);
 
 		myTrack.add(wavBuffer_, wavLength_);
-		double iterationDuration = 0.1;
-		double waitMultiplier = 0.9; // wait a litte less than target duration so we stay ahead of the audio
-		int framesEachIteration = deviceSpec.freq * iterationDuration;
+		long iterationDurationMillis = 100; // in milliseconds
+		double waitMultiplier = 0.95; // wait a litte less than target duration so we stay ahead of the audio
+		int framesEachIteration = deviceSpec.freq * iterationDurationMillis / 1000;
 		int bytesEachIteration = SDL_AUDIO_FRAMESIZE(wavSpec_) * framesEachIteration;
 
 		while (!myTrack.isEmpty()) {
-			time_t iterStart = time(nullptr);
+			long iterStart = SDL_GetTicks();
 
 			uchar* dataThisFrame;
 			bool fileEnded = false;
 			int bytesToQueue;
-			if (bytesToQueue = myTrack.remove(&dataThisFrame, bytesEachIteration) != bytesEachIteration) {
+			if ((bytesToQueue = myTrack.remove(&dataThisFrame, bytesEachIteration)) != bytesEachIteration) {
 				fileEnded = true;
 			}
 
-			if (!SDL_PutAudioStreamData(stream_, dataThisFrame, bytesToQueue))
+			if (!SDL_PutAudioStreamData(stream_, dataThisFrame, bytesToQueue)) {
+				std::cout << bytesToQueue << std::endl;
 				RaiseError("We got a problem: " + std::string(SDL_GetError()));
+			}
+			free(dataThisFrame);
 			std::cout << "Frame complete. " << std::endl;
-
-			time_t iterEnd = time(nullptr);
 
 			if (fileEnded) {
 				break;
 			}
 
 			// sleep for the rest of the iteration
-			long milliRemaining = (iterationDuration * waitMultiplier - difftime(iterEnd, iterStart)) * 1000L;
+			long iterEnd = SDL_GetTicks();
+			long milliRemaining = (iterationDurationMillis * waitMultiplier - (iterEnd - iterStart));
 			if (milliRemaining > 0)
-				std::this_thread::sleep_for(std::chrono::milliseconds(milliRemaining));
+				SDL_Delay(milliRemaining);
 		}
 
 		// Track is finished, wait for stream to end
 		while (SDL_GetAudioStreamQueued(stream_)) {
-			std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+			SDL_Delay(1000);
 		}
 
 		std::cout << "Done!" << std::endl;
+		return 0;
+	}
+
+	void start(float targetInterval) {
+		AudioSystem::targetInterval = targetInterval;
+
+		audioThread = SDL_CreateThread(run, NULL, NULL);
+	}
+
+	void cleanup() {
+		int threadReturn;
+		SDL_WaitThread(audioThread, &threadReturn);
 	}
 }

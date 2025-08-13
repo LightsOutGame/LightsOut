@@ -12,9 +12,7 @@
 #include "engine/ResizeMode.h"
 #include "engine/Component.h"
 #include "engine/EntityRef.h"
-#include "engine/Events.h"
 #include "engine/ComponentRef.h"
-#include "engine/Renderable.h"
 
 
 class TylerDoesntLikeTheGameClass {
@@ -38,16 +36,9 @@ public:
     // Map of component keys to entity-component pairs
     std::unordered_map<ComponentKey, std::unordered_map<EntityRef, std::shared_ptr<Component>>> components;
 
-    // List of component keys for components that handle rendering
-    std::vector<ComponentKey> renderingComponents;
-
     // Registers a component type in the system
 	template <ComponentLike Type>
     void registerComponent();
-
-	// Registers a component type with associated events to listen for
-    template<ComponentLike Type, typename... Args>
-    void registerComponent(Args... eventsToListenFor);
  
 	// Retrieves the component of the given type attached to the given entity.
 	// If none exists, returns an empty ComponentRef.
@@ -59,17 +50,6 @@ public:
 template<ComponentLike Type>
 void TylerDoesntLikeTheGameClass::registerComponent() {
 	components.emplace(Type::staticGetKey(), std::unordered_map<EntityRef, std::shared_ptr<Component>>());
-
-	// Component should have the render callbacks
-	if (std::is_base_of_v<Renderable, Type>) {
-		renderingComponents.push_back(Type::staticGetKey());
-	}
-}
-
-template<ComponentLike Type, typename... Args>
-void TylerDoesntLikeTheGameClass::registerComponent(Args... eventsToListenFor) {
-	registerComponent<Type>();
-	Events::registerListener(Type::staticGetKey(), static_cast<Events::EventType>(eventsToListenFor)...);
 }
 
 template<ComponentLike Type>

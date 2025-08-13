@@ -5,12 +5,10 @@
 
 #include "Setup.h"
 
-#include "components/PrinterComponent.h"
 #include "components/SquareRenderComponent.h"
 
 void InitializeComponentRegistry(TylerDoesntLikeTheGameClass* game) {
-	// Register components and their event listeners
-	game->registerComponent<PrinterComponent>(Events::PlayerUpdate);
+	// Register components
 	game->registerComponent<SquareRenderComponent>();
 }
 

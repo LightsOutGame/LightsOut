@@ -5,11 +5,11 @@
 # Add source to this project's executable.
 
 
-set(ENGINE_SRC "engine/EntityRef.cpp" "engine/Component.cpp" "engine/ComponentRef.cpp" "engine/Events.cpp" "engine/AudioPlayer.cpp" "engine/AudioEngine.cpp" "engine/AudioTrack.cpp")
-set(COMPONENTS_SRC "components/PrinterComponent.cpp" "components/SquareRenderComponent.cpp")
-set(PHYSICS_SRC)
+set(ENGINE_SRC "engine/EntityRef.cpp" "engine/Component.cpp" "engine/ComponentRef.cpp" "engine/AudioTrack.cpp")
+set(COMPONENTS_SRC "components/SquareRenderComponent.cpp" "systems/AudioSystem.cpp")
+set(SYSTEMS_SRC "systems/RenderSystem.cpp")
 
-set(SRC ${ENGINE_SRC} ${COMPONENTS_SRC} ${PHYSICS_SRC} "Game.cpp" "Setup.cpp" "Main.cpp" "Utils.cpp")
+set(SRC ${ENGINE_SRC} ${COMPONENTS_SRC} ${SYSTEMS_SRC} "Game.cpp" "Setup.cpp" "Main.cpp" "Utils.cpp")
 
 
 if (WIN32)
